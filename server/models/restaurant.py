@@ -12,5 +12,8 @@ class Restaurant(db.Model):
             'id': self.id,
             'name': self.name,
             'address': self.address,
-            'restaurant_pizzas': [rp.to_dict() for rp in self.restaurant_pizzas]
+            'restaurant_pizzas': [
+                {'id': rp.id, 'price': rp.price, 'pizza_id': rp.pizza_id}
+                for rp in self.restaurant_pizzas
+            ]
         }

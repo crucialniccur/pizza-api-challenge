@@ -17,7 +17,5 @@ class RestaurantPizza(db.Model):
             'id': self.id,
             'price': self.price,
             'restaurant_id': self.restaurant_id,
-            'pizza_id': self.pizza_id,
-            'restaurant': self.restaurant.to_dict() if self.restaurant else None,
-            'pizza': self.pizza.to_dict() if self.pizza else None
+            'pizza_id': self.pizza_id
         }
