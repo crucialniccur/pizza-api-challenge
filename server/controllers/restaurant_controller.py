@@ -10,3 +10,12 @@ def get_restaurants():
     restaurants = Restaurant.query.all()
 
     return jsonify([restaurant.to_dict() for restaurant in restaurants])
+
+
+@restaurant_bp.route('/restaurants/<int:id>', methods=['GET'])
+def get_restaurant_by_id(id):
+    restaurant = Restaurant.query.get(id)
+
+    if not restaurant:
+        return jsonify({"error": 'an error occured, restaurant not found innit'}), 404
+    return jsonify(restaurant.to_dict())
