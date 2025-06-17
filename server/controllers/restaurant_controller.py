@@ -19,3 +19,16 @@ def get_restaurant_by_id(id):
     if not restaurant:
         return jsonify({"error": 'an error occured, restaurant not found innit'}), 404
     return jsonify(restaurant.to_dict())
+
+
+@restaurant_bp.route('/restaurants/<int:id>', methods=['DELETE'])
+def delete_restaurant(id):
+
+    restaurant = Restaurant.query.get(id)
+
+    if not restaurant:
+        return jsonify({'Error Message': 'Restaurant not found'}), 404
+    db.session.delete(restaurant)
+    db.session.commit()
+
+    return make_response('', 204)
