@@ -1,110 +1,81 @@
-# Pizza Restaurant API Challenge
+Pizza Restaurant API Challenge
+Overview
+This RESTful API for a Pizza Restaurant is built using Flask, SQLAlchemy, and Flask-Migrate. It manages restaurants, pizzas, and their associations, with price validations enforced at both the database and application levels.
+Setup Instructions
 
-## Overview
+Clone the repository:
+git clone https://github.com/crucialniccur/pizza-api-challenge.git
+cd pizza-api-challenge
 
-This is a RESTful API for a Pizza Restaurant built with Flask, SQLAlchemy, and Flask-Migrate. It manages restaurants, pizzas, and their associations, including price validations.
-
----
-
-## Setup Instructions
-
-1. **Clone the repository:**
-
-   ```bash
-   git clone https://github.com/crucialniccur/pizza-api-challenge.git
-   cd pizza-api-challenge
-   Install dependencies using pipenv:
-   ```
-
-bash
-Copy
-Edit
+Install dependencies using pipenv:
 pipenv install flask flask_sqlalchemy flask_migrate
 pipenv shell
+
 Set the Flask app environment variable:
-
-bash
-Copy
-Edit
 export FLASK_APP=server/app.py
-Initialize and apply database migrations:
 
-bash
-Copy
-Edit
+Initialize and apply database migrations:
 flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade
+
 Seed the database:
-
-bash
-Copy
-Edit
 python -m server.seed
-Run the app:
 
-bash
-Copy
-Edit
+Run the app:
 flask run
+
 Route Summary
 GET /restaurants
-List all restaurants with their pizzas.
 
-GET /restaurants/<id>
-Get a specific restaurant’s details and its pizzas.
+Description: List all restaurants with their associated pizzas.
+Response: JSON array of restaurants with their details and pizzas.
 
-DELETE /restaurants/<id>
-Delete a restaurant and its associated restaurant_pizzas.
+GET /restaurants/
+
+Description: Get details of a specific restaurant and its associated pizzas.
+Response: JSON object with restaurant details and pizzas, or 404 if not found.
+
+DELETE /restaurants/
+
+Description: Delete a restaurant and its associated restaurant_pizzas.
+Response: 204 on success, or 404 if not found.
 
 GET /pizzas
-List all pizzas.
+
+Description: List all pizzas.
+Response: JSON array of pizzas.
 
 POST /restaurant_pizzas
-Create a restaurant-pizza association.
-Request body:
 
-json
-Copy
-Edit
+Description: Create a restaurant-pizza association.
+
+Request Body:
 {
 "price": float,
 "restaurant_id": int,
 "pizza_id": int
 }
-Response: Created RestaurantPizza or error if validation fails.
+
+Response: JSON object of the created RestaurantPizza, or error if validation fails.
 
 Validation Rules
-RestaurantPizza.price must be between 1 and 30 (enforced both at the database and application levels).
 
-POST /restaurant_pizzas requires price, restaurant_id, and pizza_id.
-
+RestaurantPizza.price: Must be between 1 and 30 (enforced at both database and application levels).
+POST /restaurant_pizzas: Requires price, restaurant_id, and pizza_id.
 Returns 400 for missing fields or invalid price.
-
 Returns 404 if the specified restaurant or pizza does not exist.
 
 Testing with Postman
-Import the challenge-1-pizzas.postman_collection.json into Postman.
 
+Import the challenge-1-pizzas.postman_collection.json file into Postman.
 Ensure the server is running (flask run).
-
 Run the collection to test all routes.
-
-Verify:
-
-GET /restaurants returns a list of restaurants.
-
-GET /restaurants/<id> works with valid and invalid IDs.
-
-DELETE /restaurants/<id> deletes the restaurant and associated RestaurantPizza records.
-
-GET /pizzas returns a list of pizzas.
-
-POST /restaurant_pizzas works with valid data and returns errors for invalid data (e.g., price > 30).
+Verify the following:
+GET /restaurants: Returns a list of restaurants.
+GET /restaurants/: Works with valid and invalid IDs.
+DELETE /restaurants/: Deletes the restaurant and associated RestaurantPizza records.
+GET /pizzas: Returns a list of pizzas.
+POST /restaurant_pizzas: Works with valid data and returns errors for invalid data (e.g., price > 30).
 
 This README provides all necessary steps to set up, run, and test the Pizza Restaurant API.
-
-Copy
-Edit
-
-Tools
