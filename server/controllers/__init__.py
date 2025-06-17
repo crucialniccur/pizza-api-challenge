@@ -1,1 +1,4 @@
 # Empty file to make controllers a package
+from .restaurant_controller import restaurant_bp
+from .pizza_controller import pizza_bp
+from .restaurant_pizza_controller import restaurant_pizza_bp
