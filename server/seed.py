@@ -1,40 +1,58 @@
 import sys
 import os
+from faker import Faker
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from server.extensions import db
 from server.models import Restaurant, Pizza, RestaurantPizza
 
+faker = Faker()
+
 def seed_data():
-    # Drop and recreate tables
-    db.drop_all()
-    db.create_all()
+    with app.app_context():
+        # Clean existing data safely (no drop_all)
+        print("Cleaning existing data...")
+        RestaurantPizza.query.delete()
+        Pizza.query.delete()
+        Restaurant.query.delete()
+        db.session.commit()
 
-    # Seed Restaurants
-    r1 = Restaurant(name="Pizza Palace", address="123 Main St")
-    r2 = Restaurant(name="Slice Heaven", address="456 Oak Ave")
-    db.session.add_all([r1, r2])
+        print("Seeding restaurants and pizzas...")
 
-    # Seed Pizzas
-    p1 = Pizza(name="Margherita", ingredients="Tomato, Mozzarella, Basil")
-    p2 = Pizza(name="Pepperoni", ingredients="Tomato, Mozzarella, Pepperoni")
-    db.session.add_all([p1, p2])
+        # Create some random restaurants
+        restaurants = [
+            Restaurant(name=faker.company(), address=faker.address())
+            for _ in range(5)
+        ]
+        db.session.add_all(restaurants)
 
-    # Commit to ensure IDs are assigned
-    db.session.commit()
+        # Create some random pizzas
+        pizzas = [
+            Pizza(name=faker.word().capitalize() + " Pizza", ingredients=", ".join(faker.words(3)))
+            for _ in range(8)
+        ]
+        db.session.add_all(pizzas)
+        db.session.commit()  # Commit so IDs get assigned
 
-    # Seed RestaurantPizzas
-    rp1 = RestaurantPizza(price=12.99, restaurant_id=r1.id, pizza_id=p1.id)
-    rp2 = RestaurantPizza(price=14.99, restaurant_id=r1.id, pizza_id=p2.id)
-    rp3 = RestaurantPizza(price=11.99, restaurant_id=r2.id, pizza_id=p1.id)
-    db.session.add_all([rp1, rp2, rp3])
+        print(" Seeding RestaurantPizza prices...")
 
-    # Final commit
-    db.session.commit()
-    print("Database seeded successfully!")
+        # Create RestaurantPizza relationships with random prices
+        restaurant_pizzas = []
+        for _r in restaurants:
+            # Each restaurant gets 2-4 pizzas with random prices
+            sampled_pizzas = faker.random_choices(elements=pizzas, length=faker.random_int(min=2, max=4))
+            for _p in sampled_pizzas:
+                price = round(faker.random_number(digits=2, fix_len=False) / 10 + 5, 2)  # Price between 5 and ~15
+                restaurant_pizzas.append(
+                    RestaurantPizza(price=price, restaurant_id=_r.id, pizza_id=_p.id)
+                )
+        db.session.add_all(restaurant_pizzas)
+        db.session.commit()
+
+        print("Database seeded successfully with  data")
 
 if __name__ == '__main__':
-    # Initialize app context for db
     from server.app import app
     with app.app_context():
         seed_data()
