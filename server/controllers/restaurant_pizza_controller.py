@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from config import db
+from server.config import db
 from models.restaurant_pizza import RestaurantPizza
 from models.restaurant import Restaurant
 from models.pizza import Pizza

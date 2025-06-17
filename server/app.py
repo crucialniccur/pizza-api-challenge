@@ -1,5 +1,5 @@
 from flask import Flask
-from config import app, db
+from server.config import app, db
 from controllers.restaurant_controller import restaurant_bp
 from controllers.pizza_controller import pizza_bp
 from controllers.restaurant_pizza_controller import restaurant_pizza_bp
