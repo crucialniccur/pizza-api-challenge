@@ -89,7 +89,7 @@
       "request": {
         "method": "DELETE",
         "header": [],
-        "url": "{{base_url}}/restaurants/2"
+        "url": "{{base_url}}/restaurants/5"
       },
       "response": [],
       "event": [
