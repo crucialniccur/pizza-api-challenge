@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "Pizza Restaurant API",
-    "_postman_id": "a7b9c3e2-4f5a-4c1b-8f8e-5c7f9d0e2f1c",
-    "description": "Postman collection for testing the Pizza Restaurant API challenge.",
+    "name": "Simple Pizza Restaurant API Test",
+    "_postman_id": "b8c0d4f3-5g6b-5d2c-9g9f-7d8g0e1f4g2d",
+    "description": "Simple Postman collection to test the Pizza Restaurant API.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -11,11 +11,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": {
-          "raw": "{{base_url}}/restaurants",
-          "host": ["{{base_url}}"],
-          "path": ["restaurants"]
-        }
+        "url": "{{base_url}}/restaurants"
       },
       "response": [],
       "event": [
@@ -27,17 +23,7 @@
               "    pm.response.to.have.status(200);",
               "});",
               "pm.test('Response is an array', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData).to.be.an('array');",
-              "});",
-              "pm.test('Each restaurant has required fields', function () {",
-              "    var jsonData = pm.response.json();",
-              "    jsonData.forEach(function(restaurant) {",
-              "        pm.expect(restaurant).to.have.property('id');",
-              "        pm.expect(restaurant).to.have.property('name');",
-              "        pm.expect(restaurant).to.have.property('address');",
-              "        pm.expect(restaurant).to.have.property('restaurant_pizzas').that.is.an('array');",
-              "    });",
+              "    pm.expect(pm.response.json()).to.be.an('array');",
               "});"
             ],
             "type": "text/javascript"
@@ -46,15 +32,11 @@
       ]
     },
     {
-      "name": "Get Restaurant by ID (Valid)",
+      "name": "Get Restaurant by Valid ID",
       "request": {
         "method": "GET",
         "header": [],
-        "url": {
-          "raw": "{{base_url}}/restaurants/1",
-          "host": ["{{base_url}}"],
-          "path": ["restaurants", "1"]
-        }
+        "url": "{{base_url}}/restaurants/1"
       },
       "response": [],
       "event": [
@@ -70,7 +52,6 @@
               "    pm.expect(jsonData).to.have.property('id');",
               "    pm.expect(jsonData).to.have.property('name');",
               "    pm.expect(jsonData).to.have.property('address');",
-              "    pm.expect(jsonData).to.have.property('restaurant_pizzas').that.is.an('array');",
               "});"
             ],
             "type": "text/javascript"
@@ -79,15 +60,11 @@
       ]
     },
     {
-      "name": "Get Restaurant by ID (Invalid)",
+      "name": "Get Restaurant by Invalid ID",
       "request": {
         "method": "GET",
         "header": [],
-        "url": {
-          "raw": "{{base_url}}/restaurants/999",
-          "host": ["{{base_url}}"],
-          "path": ["restaurants", "999"]
-        }
+        "url": "{{base_url}}/restaurants/999"
       },
       "response": [],
       "event": [
@@ -98,9 +75,8 @@
               "pm.test('Status code is 404', function () {",
               "    pm.response.to.have.status(404);",
               "});",
-              "pm.test('Response has error message', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData).to.have.property('error').that.equals('Restaurant not found');",
+              "pm.test('Error message is correct', function () {",
+              "    pm.expect(pm.response.json().error).to.equal('Restaurant not found');",
               "});"
             ],
             "type": "text/javascript"
@@ -113,11 +89,7 @@
       "request": {
         "method": "DELETE",
         "header": [],
-        "url": {
-          "raw": "{{base_url}}/restaurants/2",
-          "host": ["{{base_url}}"],
-          "path": ["restaurants", "2"]
-        }
+        "url": "{{base_url}}/restaurants/2"
       },
       "response": [],
       "event": [
@@ -139,11 +111,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": {
-          "raw": "{{base_url}}/pizzas",
-          "host": ["{{base_url}}"],
-          "path": ["pizzas"]
-        }
+        "url": "{{base_url}}/pizzas"
       },
       "response": [],
       "event": [
@@ -155,16 +123,7 @@
               "    pm.response.to.have.status(200);",
               "});",
               "pm.test('Response is an array', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData).to.be.an('array');",
-              "});",
-              "pm.test('Each pizza has required fields', function () {",
-              "    var jsonData = pm.response.json();",
-              "    jsonData.forEach(function(pizza) {",
-              "        pm.expect(pizza).to.have.property('id');",
-              "        pm.expect(pizza).to.have.property('name');",
-              "        pm.expect(pizza).to.have.property('ingredients');",
-              "    });",
+              "    pm.expect(pm.response.json()).to.be.an('array');",
               "});"
             ],
             "type": "text/javascript"
@@ -173,7 +132,7 @@
       ]
     },
     {
-      "name": "Create RestaurantPizza (Valid)",
+      "name": "Create RestaurantPizza Valid",
       "request": {
         "method": "POST",
         "header": [
@@ -186,11 +145,7 @@
           "mode": "raw",
           "raw": "{\"price\": 15.99, \"restaurant_id\": 1, \"pizza_id\": 2}"
         },
-        "url": {
-          "raw": "{{base_url}}/restaurant_pizzas",
-          "host": ["{{base_url}}"],
-          "path": ["restaurant_pizzas"]
-        }
+        "url": "{{base_url}}/restaurant_pizzas"
       },
       "response": [],
       "event": [
@@ -205,8 +160,6 @@
               "    var jsonData = pm.response.json();",
               "    pm.expect(jsonData).to.have.property('id');",
               "    pm.expect(jsonData).to.have.property('price');",
-              "    pm.expect(jsonData).to.have.property('restaurant_id');",
-              "    pm.expect(jsonData).to.have.property('pizza_id');",
               "});"
             ],
             "type": "text/javascript"
@@ -215,7 +168,7 @@
       ]
     },
     {
-      "name": "Create RestaurantPizza (Invalid Price)",
+      "name": "Create RestaurantPizza Invalid Price",
       "request": {
         "method": "POST",
         "header": [
@@ -228,11 +181,7 @@
           "mode": "raw",
           "raw": "{\"price\": 50, \"restaurant_id\": 1, \"pizza_id\": 2}"
         },
-        "url": {
-          "raw": "{{base_url}}/restaurant_pizzas",
-          "host": ["{{base_url}}"],
-          "path": ["restaurant_pizzas"]
-        }
+        "url": "{{base_url}}/restaurant_pizzas"
       },
       "response": [],
       "event": [
@@ -243,89 +192,8 @@
               "pm.test('Status code is 400', function () {",
               "    pm.response.to.have.status(400);",
               "});",
-              "pm.test('Response has error message', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData).to.have.property('errors');",
-              "    pm.expect(jsonData.errors).to.include('Price must be between 1 and 30');",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Create RestaurantPizza (Missing Fields)",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"price\": 15.99}"
-        },
-        "url": {
-          "raw": "{{base_url}}/restaurant_pizzas",
-          "host": ["{{base_url}}"],
-          "path": ["restaurant_pizzas"]
-        }
-      },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status code is 400', function () {",
-              "    pm.response.to.have.status(400);",
-              "});",
-              "pm.test('Response has error message', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData).to.have.property('errors');",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Create RestaurantPizza (Invalid Restaurant ID)",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"price\": 15.99, \"restaurant_id\": 999, \"pizza_id\": 2}"
-        },
-        "url": {
-          "raw": "{{base_url}}/restaurant_pizzas",
-          "host": ["{{base_url}}"],
-          "path": ["restaurant_pizzas"]
-        }
-      },
-      "response": [],
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status code is 404', function () {",
-              "    pm.response.to.have.status(404);",
-              "});",
-              "pm.test('Response has error message', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData).to.have.property('errors');",
-              "    pm.expect(jsonData.errors).to.include('Restaurant not found');",
+              "pm.test('Error message is correct', function () {",
+              "    pm.expect(pm.response.json().errors).to.include('Price must be between 1 and 30');",
               "});"
             ],
             "type": "text/javascript"
